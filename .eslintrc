@@ -1,5 +1,18 @@
 {
+  "parser": "@babel/eslint-parser",
   "env": {
-    "browser": true
-  }
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "rules": {
+    "object-curly-spacing": "off",
+    "require-jsdoc": "off"
+  },
+  "extends": ["google"]
 }
