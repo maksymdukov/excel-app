@@ -1,5 +1,32 @@
-$color: purple;
+@import '~normalize.css';
+
+@import 'mixins';
+@import 'variables';
+@import 'header';
+@import 'formula';
+@import 'table';
+@import 'toolbar';
+@import "dashboard";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 12px;
+}
 
 body {
-  background: rebeccapurple;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+}
+
+.excel {
+  position: relative;
+  color: #888;
+  height: 100%;
+  max-width: 100%;
+  font-size: 1rem;
 }
