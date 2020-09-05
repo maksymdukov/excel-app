@@ -15,7 +15,10 @@
     "require-jsdoc": "off",
     "operator-linebreak": "off",
     "indent": "off",
-    "max-len": "off"
+    "max-len": "off",
+    "no-invalid-this": "off",
+    "space-before-function-paren": "off",
+    "no-unused-vars": "warn"
   },
   "extends": ["google"]
 }
