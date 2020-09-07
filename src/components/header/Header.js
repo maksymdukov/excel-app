@@ -1,6 +1,12 @@
 import { ExcelComponent } from 'core/ExcelComponent';
 
 export class Header extends ExcelComponent {
+  constructor($root, options) {
+    super($root, {
+      ...options,
+    });
+  }
+
   static className = 'excel__header';
 
   toHTML() {
