@@ -7,7 +7,6 @@ export class DomListener {
     }
     this.$root = $root;
     this.listeners = listeners;
-    this.boundListeners = [];
   }
 
   throwIfNoMethod(method) {
@@ -30,7 +29,7 @@ export class DomListener {
   removeDOMListeners() {
     this.listeners.forEach((listener) => {
       const method = getMethodName(listener);
-      this.$root.off(event, this[method]);
+      this.$root.off(listener, this[method]);
     });
   }
 }
