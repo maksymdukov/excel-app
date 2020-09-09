@@ -14,8 +14,16 @@ class Dom {
     return this.$el.outerHTML.trim();
   }
 
+  attr(name, value) {
+    if (value) {
+      this.$el.setAttribute(name, value);
+      return this;
+    }
+    return this.$el.getAttribute(name);
+  }
+
   text(text) {
-    if (typeof text === 'string') {
+    if (typeof text !== 'undefined') {
       this.$el.textContent = text;
       return this;
     }
@@ -103,6 +111,13 @@ class Dom {
   focus() {
     this.$el.focus();
     return this;
+  }
+
+  getStyles(styles = []) {
+    return styles.reduce((acc, s) => {
+      acc[s] = this.$el.style[s];
+      return acc;
+    }, {});
   }
 }
 

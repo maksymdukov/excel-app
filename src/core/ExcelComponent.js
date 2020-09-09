@@ -5,6 +5,8 @@ export class ExcelComponent extends DomListener {
     super($root, options.listeners);
     this.name = options.name || '';
     this.emitter = options.emitter;
+    this.subscribe = options.subscribe || [];
+    this.store = options.store;
     this.unsubs = [];
     this.prepare();
   }
@@ -34,5 +36,16 @@ export class ExcelComponent extends DomListener {
   // Proxy for inter-component eventEmitter
   $on(eventName, fn) {
     this.unsubs.push(this.emitter.subscribe(eventName, fn));
+  }
+
+  // Redux
+  $dispatch(action) {
+    this.store.dispatch(action);
+  }
+  // Redux
+  storeChanged() {}
+  // Redux
+  isWatching(key) {
+    return this.subscribe.includes(key);
   }
 }
