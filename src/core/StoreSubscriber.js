@@ -1,4 +1,4 @@
-import { isEqual } from 'core/utils';
+import { isEqual, isProd } from 'core/utils';
 
 export class StoreSubscriber {
   constructor(store) {
@@ -21,6 +21,9 @@ export class StoreSubscriber {
         }
       });
       this.prevState = this.store.getState();
+      if (!isProd) {
+        window['reduxState'] = this.prevState;
+      }
     });
   }
 

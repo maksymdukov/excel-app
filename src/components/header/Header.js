@@ -1,6 +1,7 @@
 import { ExcelComponent } from 'core/ExcelComponent';
 import { $ } from 'core/dom';
 import { changeTitle } from 'redux/actions';
+import { ActiveRoute } from 'core/router/ActiveRoute';
 
 export class Header extends ExcelComponent {
   constructor($root, options) {
@@ -18,11 +19,11 @@ export class Header extends ExcelComponent {
     <input type="text" class="title-input" value="${title}" />
 
     <div>
-        <div class="button">
+        <a class="button" href="#dashboard">
           <i class="material-icons">exit_to_app</i>
-        </div>
+        </a>
 
-        <div class="button">
+        <div class="button" data-button="delete">
           <i class="material-icons">delete</i>
     </div>
     `;
@@ -33,5 +34,14 @@ export class Header extends ExcelComponent {
     this.$dispatch(changeTitle($target.text()));
   }
 
-  onClick() {}
+  onClick(ev) {
+    const deleteButton = $(ev.target).closest('[data-button="delete"]');
+    if (deleteButton.$el) {
+      const decision = window.confirm('Do you really want to delete it?');
+      if (decision) {
+        localStorage.removeItem(`excel:${ActiveRoute.params}`);
+        ActiveRoute.navigate('dashboard');
+      }
+    }
+  }
 }

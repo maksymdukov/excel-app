@@ -57,3 +57,5 @@ export function stylesObjToString(obj) {
     .map((key) => `${cameCaseToDash(key)}: ${obj[key]}`)
     .join(';');
 }
+
+export const isProd = process.env.NODE_ENV === 'production';
