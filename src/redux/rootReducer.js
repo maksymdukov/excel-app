@@ -1,5 +1,10 @@
 import * as types from 'redux/types';
-import { APPLY_STYLE, CHANGE_STYLES, CHANGE_TITLE } from 'redux/types';
+import {
+  APPLY_STYLE,
+  CHANGE_ACCESS_TIME,
+  CHANGE_STYLES,
+  CHANGE_TITLE,
+} from 'redux/types';
 import { defaultStyles, defaultTitle } from 'constant';
 
 const initState = {
@@ -10,6 +15,7 @@ const initState = {
   stylesState: {},
   currentText: '',
   currentStyles: defaultStyles,
+  lastTimeAccessed: Date.now(),
 };
 
 export const rootReducer = (state = initState, action) => {
@@ -58,6 +64,11 @@ export const rootReducer = (state = initState, action) => {
       return {
         ...state,
         title: action.payload,
+      };
+    case CHANGE_ACCESS_TIME:
+      return {
+        ...state,
+        lastTimeAccessed: Date.now(),
       };
     default:
       return state;

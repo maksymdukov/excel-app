@@ -1,10 +1,11 @@
 import { $ } from 'core/dom';
 import { EventEmitter } from 'core/EventEmitter';
 import { StoreSubscriber } from 'core/StoreSubscriber';
+import { changeAccessTime } from 'redux/actions';
+import { isProd } from 'core/utils';
 
 export class Excel {
-  constructor(selector, options) {
-    this.$el = document.querySelector(selector);
+  constructor(options) {
     this.components = options.components || [];
     this.store = options.store;
     this.emitter = new EventEmitter();
@@ -24,13 +25,23 @@ export class Excel {
     return $root;
   }
 
-  render() {
-    $(this.$el).append(this.getRoot());
+  preventDefault(e) {
+    e.preventDefault();
+  }
+
+  init() {
+    if (isProd) {
+      window.addEventListener('contextmenu', this.preventDefault);
+    }
+    this.store.dispatch(changeAccessTime());
     this.subscriber.subscribeComponents(this.components);
     this.components.forEach((comp) => comp.init());
   }
 
   destroy() {
+    if (isProd) {
+      window.removeEventListener('contextmenu', this.preventDefault);
+    }
     this.subscriber.unsubscribeFromStore();
     this.components.forEach((cmp) => cmp.destroy());
   }

@@ -1,5 +1,6 @@
 import {
   APPLY_STYLE,
+  CHANGE_ACCESS_TIME,
   CHANGE_STYLES,
   CHANGE_TITLE,
   TABLE_CHANGE_TEXT,
@@ -29,4 +30,8 @@ export const applyStyle = ({ style, ids }) => ({
 export const changeTitle = (title) => ({
   type: CHANGE_TITLE,
   payload: title,
+});
+
+export const changeAccessTime = () => ({
+  type: CHANGE_ACCESS_TIME,
 });
