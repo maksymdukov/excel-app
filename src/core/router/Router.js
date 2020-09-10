@@ -1,5 +1,6 @@
 import { $ } from 'core/dom';
 import { ActiveRoute } from 'core/router/ActiveRoute';
+import { Loader } from 'components/Loader';
 
 export class Router {
   constructor(selector, routes) {
@@ -8,6 +9,7 @@ export class Router {
     }
 
     this.$placeholder = $(selector);
+    this.$loader = new Loader();
     this.routes = routes;
     this.currentPage = null;
     this.changePageHandler = this.changePageHandler.bind(this);
@@ -20,12 +22,15 @@ export class Router {
     this.changePageHandler();
   }
 
-  changePageHandler() {
+  async changePageHandler() {
     // cleanup
     if (this.currentPage) {
       this.currentPage.destroy();
-      this.$placeholder.clear();
+      this.$placeholder.clear().append(this.$loader);
     }
+
+    // start spinner
+    this.$placeholder.append(this.$loader);
 
     // identify page
     const path = ActiveRoute.path.split('/')[0];
@@ -34,7 +39,10 @@ export class Router {
       Page = this.routes.index;
     }
     this.currentPage = new Page(ActiveRoute.params);
-    const html = this.currentPage.getRoot();
+    const html = await this.currentPage.getRoot();
+
+    // remove spinner
+    this.$placeholder.clear();
 
     // render
     this.$placeholder.append(html);

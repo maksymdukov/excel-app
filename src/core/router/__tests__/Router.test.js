@@ -1,5 +1,5 @@
 import { Router } from '../Router';
-import { Page } from '../Page';
+import { Page } from 'core/page/Page';
 
 class DashboardPage extends Page {
   getRoot() {
@@ -33,9 +33,9 @@ describe('Router', () => {
     expect($root.innerHTML).toContain('dashboard');
   });
 
-  it('should render excel page', () => {
+  it('should render excel page', async () => {
     window.location.hash = 'excel';
-    router.changePageHandler();
+    await router.changePageHandler();
     expect($root.innerHTML).toContain('excel');
   });
 });
