@@ -1,6 +1,6 @@
 import { $ } from 'core/dom';
 import { EventEmitter } from 'core/EventEmitter';
-import { StoreSubscriber } from 'core/StoreSubscriber';
+import { StoreSubscriber } from 'core/store/StoreSubscriber';
 import { changeAccessTime } from 'redux/actions';
 import { isProd } from 'core/utils';
 

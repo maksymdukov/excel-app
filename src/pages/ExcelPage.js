@@ -1,10 +1,10 @@
-import { Page } from 'core/Page';
+import { Page } from 'core/router/Page';
 import { Excel } from 'components/excel/Excel';
 import { Header } from 'components/header/Header';
 import { Toolbar } from 'components/toolbar/Toolbar';
 import { Formula } from 'components/formula/Formula';
 import { Table } from 'components/table/Table';
-import { createStore } from 'core/createStore';
+import { createStore } from 'core/store/createStore';
 import { rootReducer } from 'redux/rootReducer';
 import { debounce, storage } from 'core/utils';
 
