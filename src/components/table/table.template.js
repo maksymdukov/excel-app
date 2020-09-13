@@ -1,16 +1,10 @@
 import { defaultStyles } from 'constant';
 import { stylesObjToString } from 'core/utils';
-import { parse } from 'core/parse';
-
-const CODES = {
-  A: 65,
-  Z: 90,
-};
-
-const DEFAULT_WIDTH = 120; // default col width
-const DEFAULT_HEIGHT = 24; // default row height
+import { CODES, DEFAULT_WIDTH, DEFAULT_HEIGHT } from './table.constants';
 
 function createCell({ col, row, width, cellContent, cellStyles }) {
+  const dataValue = cellContent.formula || '';
+  const innerContent = cellContent.number || cellContent.error || '';
   const styles = stylesObjToString({ ...defaultStyles, ...cellStyles });
   return `
   <div 
@@ -20,10 +14,10 @@ function createCell({ col, row, width, cellContent, cellStyles }) {
     data-row="${row}" 
     data-id="${row}:${col}" 
     data-type="cell"
-    data-value="${cellContent}"
+    data-value="${dataValue}"
     style="${styles}; width:${width}"
     >
-    ${parse(cellContent)}
+    ${innerContent}
     <div class="resize-handle"></div>
   </div>
   `;
@@ -53,7 +47,7 @@ function createRow(rowIdx, columns, rowState) {
   style="height:${rowHeight}"
 >
     <div class="row-info">${rowIdx}
-      ${rowIdx ? `<div class="row-resize" data-resize="row"></div>` : ''}
+      ${rowIdx ? '<div class="row-resize" data-resize="row"></div>' : ''}
     </div>
     <div class="row-data" ${
       rowIdx ? `data-row-number="${rowIdx}"` : ''
@@ -67,11 +61,11 @@ function toChar(_, idx) {
 }
 
 function getWidth(state, index) {
-  return (state[index] || DEFAULT_WIDTH) + 'px';
+  return `${state[index] || DEFAULT_WIDTH}px`;
 }
 
 function getHeight(state, index) {
-  return (state[index] || DEFAULT_HEIGHT) + 'px';
+  return `${state[index] || DEFAULT_HEIGHT}px`;
 }
 
 function withColumnDataFrom(state) {
@@ -81,17 +75,22 @@ function withColumnDataFrom(state) {
   };
 }
 
-function withCellDataFrom(state, row) {
+function withCellDataFrom(state, row, cellResolver) {
   return (_, idx) => {
     const cellId = `${row}:${idx}`;
     const width = getWidth(state.colState, idx);
-    const cellContent = state.dataState[cellId] || '';
+    const cellFormula = state.formulaState[cellId];
+    const cellNumber = state.numberState[cellId];
+    const cellContent = cellResolver.parseValue(
+      cellFormula || cellNumber,
+      cellId
+    );
     const cellStyles = state.stylesState[cellId];
     return { row, width, col: idx, cellContent, cellStyles };
   };
 }
 
-export function createTable(rowsCount = 15, tableState) {
+export function createTable(rowsCount = 15, tableState, cellResolver) {
   const colsCount = CODES.Z - CODES.A;
 
   const rows = [];
@@ -106,7 +105,7 @@ export function createTable(rowsCount = 15, tableState) {
   // table body
   for (let row = 0; row < rowsCount; row++) {
     const dataCols = Array.from({ length: colsCount })
-      .map(withCellDataFrom(tableState, row))
+      .map(withCellDataFrom(tableState, row, cellResolver))
       .map(createCell)
       .join('');
     rows.push(createRow(row + 1, dataCols, tableState.rowState));

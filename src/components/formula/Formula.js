@@ -14,6 +14,7 @@ export class Formula extends ExcelComponent {
 
   init() {
     super.init();
+    // eslint-disable-next-line quotes
     this.$formula = this.$root.find(`[data-input="true"]`);
 
     this.$on('table:select', ($cell) => {
@@ -44,7 +45,7 @@ export class Formula extends ExcelComponent {
     const keys = ['Enter', 'Tab'];
     if (keys.includes(event.key)) {
       event.preventDefault();
-      this.$emit(`formula:done`);
+      this.$emit('formula:done');
     }
   }
 }

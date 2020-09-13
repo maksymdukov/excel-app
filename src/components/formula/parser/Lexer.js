@@ -1,5 +1,4 @@
-import * as Tokens from './Tokens.js';
-import { Tokenizer } from './Tokenizer.js';
+import * as Tokens from './Tokens';
 
 class Expression {
   constructor() {
@@ -28,6 +27,12 @@ class Expression {
 }
 
 export class Lexer {
+  static runLexing(tokens) {
+    const exp = new Expression();
+    Lexer.lexing(tokens, exp);
+    return exp;
+  }
+
   static lexing(
     tokens,
     exp,
@@ -65,7 +70,6 @@ export class Lexer {
             return idx - 1;
           }
           return idx;
-          break;
         case Tokens.AdditionSign:
         case Tokens.SubtractionSign:
           if (!exp.left && !exp.right) {
@@ -160,4 +164,4 @@ export class Lexer {
   }
 }
 
-const tokens = Tokenizer.parse('-(1+5) + (3+5) + (2+5+(3+4 * 5))');
+// const tokens = Tokenizer.parse('-(1+5) + (3+5) + (2+5+(3+4 * 5))');

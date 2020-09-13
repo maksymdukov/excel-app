@@ -16,26 +16,26 @@ export function resizeHandler($root, event) {
         const { right, width } = $parent.getCoords();
         const delta = Math.floor(e.pageX - right);
         newWidth = width + delta;
-        $resizer.css({ right: -delta + 'px' });
+        $resizer.css({ right: `${-delta}px` });
       } else if (type === 'row') {
         const { bottom, height } = $parent.getCoords();
         const delta = Math.floor(e.pageY - bottom);
         newHeight = height + delta;
-        $resizer.css({ bottom: -delta + 'px' });
+        $resizer.css({ bottom: `${-delta}px` });
       }
     }, 16);
 
     document.onmouseup = () => {
       if (type === 'col') {
-        $parent.css({ width: newWidth + 'px' });
+        $parent.css({ width: `${newWidth}px` });
         const dataCells = $root.findAll(
           `.cell[data-col="${$parent.data.col}"]`
         );
         dataCells.forEach((cell) => {
-          cell.style.width = newWidth + 'px';
+          cell.style.width = `${newWidth}px`;
         });
       } else {
-        $parent.css({ height: newHeight + 'px' });
+        $parent.css({ height: `${newHeight}px` });
       }
 
       resolve({

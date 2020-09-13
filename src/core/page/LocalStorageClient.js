@@ -1,13 +1,14 @@
 import { storage } from 'core/utils';
 
 function storageName(param) {
-  return 'excel:' + param;
+  return `excel:${param}`;
 }
 
 export class LocalStorageClient {
   constructor(name) {
     this.name = storageName(name);
   }
+
   async save(state) {
     storage(this.name, state);
   }

@@ -1,4 +1,4 @@
-import * as Tokens from './Tokens.js';
+import * as Tokens from './Tokens';
 
 export class Tokenizer {
   static tokenTypes = Object.values(Tokens);
@@ -7,6 +7,7 @@ export class Tokenizer {
     const rawRegexps = Tokenizer.tokenTypes.map((token) => token.pattern());
     const regexp = new RegExp(rawRegexps.join('|'), 'g');
     let matches = input.match(regexp);
+    // eslint-disable-next-line
     matches = matches.map((token) => {
       for (let index = 0; index < Tokenizer.tokenTypes.length; index++) {
         const TokenType = Tokenizer.tokenTypes[index];

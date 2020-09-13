@@ -14,7 +14,7 @@ export class Header extends ExcelComponent {
   static className = 'excel__header';
 
   toHTML() {
-    const title = this.store.getState().title;
+    const { title } = this.store.getState();
     return `
     <input type="text" class="title-input" value="${title}" />
 
@@ -37,6 +37,7 @@ export class Header extends ExcelComponent {
   onClick(ev) {
     const deleteButton = $(ev.target).closest('[data-button="delete"]');
     if (deleteButton.$el) {
+      // eslint-disable-next-line no-alert
       const decision = window.confirm('Do you really want to delete it?');
       if (decision) {
         localStorage.removeItem(`excel:${ActiveRoute.params}`);

@@ -7,9 +7,11 @@ export class ExcelComponent extends DomListener {
     this.emitter = options.emitter;
     this.subscribe = options.subscribe || [];
     this.store = options.store;
+    this.mounted = false;
     this.unsubs = [];
     this.prepare();
   }
+
   // called in constructor
   prepare() {}
 
@@ -20,6 +22,7 @@ export class ExcelComponent extends DomListener {
   // Called after commitment to DOm
   init() {
     this.initDOMListeners();
+    this.mounted = true;
   }
 
   // Cleanup
@@ -42,8 +45,10 @@ export class ExcelComponent extends DomListener {
   $dispatch(action) {
     this.store.dispatch(action);
   }
+
   // Redux
   storeChanged() {}
+
   // Redux
   isWatching(key) {
     return this.subscribe.includes(key);

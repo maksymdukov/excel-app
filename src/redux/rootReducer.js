@@ -11,7 +11,8 @@ const initState = {
   title: defaultTitle,
   colState: {},
   rowState: {},
-  dataState: {}, // {'0:1': 'fewfew'}
+  numberState: {}, // {'0:1': 'fewfew'}
+  formulaState: {}, // {'0:1': '$A1 + $A2'}
   stylesState: {},
   currentText: '',
   currentStyles: defaultStyles,
@@ -30,13 +31,30 @@ export const rootReducer = (state = initState, action) => {
           [action.payload.id]: action.payload.value,
         },
       };
-    case types.TABLE_CHANGE_TEXT:
+    case types.TABLE_CHANGE_NUMBER:
       return {
         ...state,
         currentText: action.payload.text,
-        dataState: {
-          ...state.dataState,
+        numberState: {
+          ...state.numberState,
           [action.payload.id]: action.payload.text,
+        },
+        formulaState: {
+          ...state.formulaState,
+          [action.payload.id]: '',
+        },
+      };
+    case types.TABLE_CHANGE_FORMULA:
+      return {
+        ...state,
+        currentText: action.payload.formula,
+        formulaState: {
+          ...state.formulaState,
+          [action.payload.id]: action.payload.formula,
+        },
+        numberState: {
+          ...state.numberState,
+          [action.payload.id]: '',
         },
       };
     case CHANGE_STYLES:

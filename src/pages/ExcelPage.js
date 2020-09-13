@@ -32,6 +32,7 @@ export class ExcelPage extends Page {
   afterRender() {
     this.excel.init();
   }
+
   destroy() {
     this.excel.destroy();
     this.storeSub.unsubscribe();

@@ -5,6 +5,13 @@
     "browser": true,
     "node": true
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "modules": true
@@ -17,7 +24,22 @@
     "indent": "off",
     "max-len": "off",
     "no-invalid-this": "off",
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "import/prefer-default-export": "off",
+    "no-console": "off",
+    "comma-dangle": "off",
+    "arrow-body-style": "off",
+    "class-methods-use-this": "off",
+    "max-classes-per-file": "off",
+    "no-case-declarations": "off",
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "no-fallthrough": "off",
+    "no-shadow": "off",
+    "object-curly-newline": "off",
+    "no-use-before-define": "off",
+    "no-new": "off",
+    "consistent-return": "off"
   },
-  "extends": ["google"]
+  "extends": ["airbnb-base"]
 }

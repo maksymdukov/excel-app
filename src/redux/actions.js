@@ -3,8 +3,9 @@ import {
   CHANGE_ACCESS_TIME,
   CHANGE_STYLES,
   CHANGE_TITLE,
-  TABLE_CHANGE_TEXT,
+  TABLE_CHANGE_NUMBER,
   TABLE_RESIZE,
+  TABLE_CHANGE_FORMULA,
 } from 'redux/types';
 
 export const tableResize = ({ id, value, type }) => ({
@@ -12,9 +13,14 @@ export const tableResize = ({ id, value, type }) => ({
   payload: { id, value, type },
 });
 
-export const changeText = ({ text, id }) => ({
-  type: TABLE_CHANGE_TEXT,
+export const changeNumber = ({ text, id }) => ({
+  type: TABLE_CHANGE_NUMBER,
   payload: { text, id },
+});
+
+export const changeFormula = ({ formula, id }) => ({
+  type: TABLE_CHANGE_FORMULA,
+  payload: { formula, id },
 });
 
 export const changeStyles = (styles) => ({

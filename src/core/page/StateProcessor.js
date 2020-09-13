@@ -5,6 +5,7 @@ export class StateProcessor {
     this.client = saver;
     this.listen = debounce(this.listen.bind(this), delay);
   }
+
   async listen(state) {
     this.client.save(state);
   }

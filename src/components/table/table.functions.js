@@ -43,6 +43,8 @@ export function nextSelector(key, { col, row }) {
     case 'ArrowUp':
       row = row - 1 < MIN_VALUE ? row : row - 1;
       break;
+    default:
+      break;
   }
   return `[data-id="${row}:${col}"]`;
 }

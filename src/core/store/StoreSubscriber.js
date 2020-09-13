@@ -22,7 +22,7 @@ export class StoreSubscriber {
       });
       this.prevState = this.store.getState();
       if (!isProd) {
-        window['reduxState'] = this.prevState;
+        window.reduxState = this.prevState;
       }
     });
   }
