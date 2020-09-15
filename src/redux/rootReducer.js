@@ -41,7 +41,7 @@ export const rootReducer = (state = initState, action) => {
         },
         formulaState: {
           ...state.formulaState,
-          [action.payload.id]: '',
+          ...(action.payload.clearFormula && { [action.payload.id]: '' }),
         },
       };
     case types.TABLE_CHANGE_FORMULA:
@@ -54,7 +54,7 @@ export const rootReducer = (state = initState, action) => {
         },
         numberState: {
           ...state.numberState,
-          [action.payload.id]: '',
+          ...(action.payload.clearText && { [action.payload.id]: '' }),
         },
       };
     case CHANGE_STYLES:

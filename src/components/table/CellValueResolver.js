@@ -6,16 +6,19 @@ export class CellValueResolver {
     this.cache = {};
     this.dependsOn = {}; // A1 contains $B1 in its formula
     this.dependees = {}; // B1 influences A1
-    this.idStack = []; // for recursive resolution of cells
+    this.idStack = []; // to remember the recursive sequence of ids when following chain of recursive formulas
   }
 
-  // used as visitor in formula resolution
+  // used as a visitor pattern in FormulaParser
   resolveValue(cellToken) {
     const depCellName = cellToken.innerName;
     const currentlyCalculatedId = this.idStack[this.idStack.length - 1];
     this.dependsOn[currentlyCalculatedId].push(depCellName);
     if (this.cache[depCellName]) {
       // has been calculated before
+      if (Number.isNaN(Number(this.cache[depCellName]))) {
+        throw new Error(`Incorrect cell ${depCellName}`);
+      }
       return this.cache[depCellName];
     }
 
@@ -33,6 +36,7 @@ export class CellValueResolver {
       depCellName
     ];
     if (depCellFormula) {
+      // recursive call to resolve cell in this formula
       const result = this.parseValue(depCellFormula, depCellName);
       return result.number;
     }
@@ -73,8 +77,9 @@ export class CellValueResolver {
       this.dependees[id].forEach((cell) => {
         const depCellFormula = this.table.store.getState().formulaState[cell];
         if (depCellFormula) {
+          // recursive call to update dependees if it's 'dependant' changes
           const { number, error } = this.parseValue(depCellFormula, cell);
-          this.table.updateCellValue(`[data-id="${cell}"]`, error || number);
+          this.table.updateCellValue(cell, error || number);
         }
       });
     }
@@ -90,37 +95,32 @@ export class CellValueResolver {
     const result = { number: null, formula: null, error: null };
     this.parseStart(id);
     if (!value) {
+      // no value provided
       this.removeCache(id);
-      this.parseFinish(id);
-      return result;
-    }
-    if (value.startsWith('=')) {
+    } else if (value.startsWith('=')) {
+      // value is formula
       try {
-        const formulaResult = FormulaParser.parse(value.slice(1), this);
+        const formulaResult = FormulaParser.parse(value.slice(1), this); // this - visitor
         result.formula = value;
         result.number = formulaResult;
         this.cache[id] = result.number;
-        return result;
       } catch (e) {
-        this.removeCache(id);
+        // value is invalid formula
         console.warn('Parse error', e.message);
         result.error = e.message || 'Error parsing formula';
-        return result;
-      } finally {
-        this.parseFinish(id);
+        this.cache[id] = result.error;
+        result.formula = value;
       }
     } else if (/^\d+(\.\d+)?$/.test(value)) {
+      // value is a number
       result.number = value;
       this.cache[id] = value;
-      this.parseFinish(id);
-      return result;
     } else {
-      result.error = 'Wrong input';
-      // TODO
-      // propagate errors on the dependees
-      this.removeCache(id);
-      this.parseFinish(id);
-      return result;
+      // value is a text
+      result.number = value;
+      this.cache[id] = value;
     }
+    this.parseFinish(id);
+    return result;
   }
 }

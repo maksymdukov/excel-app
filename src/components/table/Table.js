@@ -63,7 +63,7 @@ export class Table extends ExcelComponent {
       const parsed = this.cellValueResolver.parseValue(text, cellId);
       this.selection.current.focus();
 
-      if (parsed.formula) {
+      if (parsed.formula && !parsed.error) {
         this.selection.current
           .attr('data-value', parsed.formula)
           .text(parsed.number);
@@ -76,9 +76,10 @@ export class Table extends ExcelComponent {
         this.updateTextInStore(parsed.number);
       }
 
-      if (parsed.error) {
+      if (parsed.error && parsed.formula) {
         this.selection.current.text(parsed.error);
-        this.updateTextInStore(parsed.error);
+        this.updateTextInStore(parsed.error, false);
+        this.updateFormulaInStore(parsed.formula, false);
       }
     });
 
@@ -119,6 +120,9 @@ export class Table extends ExcelComponent {
 
     const { key } = event;
     if (keys.includes(key) && !event.shiftKey) {
+      if (key === 'Enter') {
+        this.handleEnterKey();
+      }
       event.preventDefault();
       const id = this.selection.current.id(true);
       const $next = this.$root.find(nextSelector(key, id));
@@ -126,20 +130,34 @@ export class Table extends ExcelComponent {
     }
   }
 
-  updateFormulaInStore(formula) {
+  handleEnterKey() {
+    const text = this.selection.current.text();
+    const cellId = this.selection.current.id();
+    this.selection.current.attr('data-value', '');
+    this.updateTextInStore(text, true);
+    this.cellValueResolver.parseValue(text, cellId);
+  }
+
+  updateFormulaInStore(formula, clearText = true) {
     this.$dispatch(
       tableActions.changeFormula({
         formula: `${formula}`,
         id: this.selection.current.id(),
+        clearText,
       })
     );
   }
 
-  updateTextInStore(text) {
+  updateTextInStore(
+    text,
+    clearFormula = true,
+    id = this.selection.current.id()
+  ) {
     this.$dispatch(
       tableActions.changeNumber({
         text,
-        id: this.selection.current.id(),
+        id,
+        clearFormula,
       })
     );
   }
@@ -150,10 +168,11 @@ export class Table extends ExcelComponent {
     }
   }
 
-  updateCellValue(selector, text) {
+  updateCellValue(id, text) {
     if (!this.mounted) {
       return;
     }
-    this.$root.find(selector).text(text);
+    this.$root.find(`[data-id="${id}"]`).text(text);
+    this.updateTextInStore(text, false, id);
   }
 }

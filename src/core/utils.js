@@ -7,7 +7,7 @@ export function capitalize(string) {
 
 export function throttle(fn, timeout) {
   let timer = null;
-  return function (...args) {
+  return (...args) => {
     if (!timer) {
       fn.apply(this, args);
       timer = setTimeout(() => {

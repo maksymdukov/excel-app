@@ -13,14 +13,14 @@ export const tableResize = ({ id, value, type }) => ({
   payload: { id, value, type },
 });
 
-export const changeNumber = ({ text, id }) => ({
+export const changeNumber = ({ text, id, clearFormula }) => ({
   type: TABLE_CHANGE_NUMBER,
-  payload: { text, id },
+  payload: { text, id, clearFormula },
 });
 
-export const changeFormula = ({ formula, id }) => ({
+export const changeFormula = ({ formula, id, clearText }) => ({
   type: TABLE_CHANGE_FORMULA,
-  payload: { formula, id },
+  payload: { formula, id, clearText },
 });
 
 export const changeStyles = (styles) => ({
