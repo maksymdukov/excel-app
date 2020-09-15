@@ -18,13 +18,9 @@
     }
   },
   "rules": {
-    "object-curly-spacing": "off",
-    "require-jsdoc": "off",
     "operator-linebreak": "off",
     "indent": "off",
     "max-len": "off",
-    "no-invalid-this": "off",
-    "space-before-function-paren": "off",
     "import/prefer-default-export": "off",
     "no-console": "off",
     "comma-dangle": "off",
@@ -39,7 +35,14 @@
     "object-curly-newline": "off",
     "no-use-before-define": "off",
     "no-new": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "func-names": "off"
   },
+  "overrides": [
+    {
+      "files": ["*.test.js"],
+      "env": { "jest": true }
+    }
+  ],
   "extends": ["airbnb-base"]
 }
