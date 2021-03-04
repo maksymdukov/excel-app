@@ -10,7 +10,8 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --open",
     "build": "npm run lint && cross-env NODE_ENV=production webpack --mode='production'",
     "build:dev": "cross-env NODE_ENV=development webpack ",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "deploy": "npm run build && gh-pages -f -d dist"
   },
   "keywords": [],
   "author": "",
